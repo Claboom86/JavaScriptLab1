@@ -1,34 +1,52 @@
 "use strict";
 
-let grantHealth=10;
-let userHealth=40;
-let userWins=0;
-let play = prompt("Do you want to play?");
+let grantHealth = 10;
+let userHealth = 40;
+let userWins = 0;
 
-if (play === "yes") {
-    let name = prompt("What is your name?");
-    while (play === "yes") {
-        grantHealth-=Math.floor(Math.random() * 2) + 1;
-        userHealth-=Math.floor(Math.random() * 2) + 1;
-        console.log(`Grant has ${grantHealth} health left.`);
-        console.log(`${name} has ${userHealth} health left.`);
-        if (grantHealth <= 0) {
-            userWins += 1;
-            grantHealth=10;
-        }
-    
-        if (userHealth <= 0) {
-            console.log("You lose!")
-            break;
-        }
-    
-        if (userWins === 3) {
-            console.log("You win!")
-            break;
-        } 
+const startGame = () => {
+    let play = prompt("Do you want to play?");
+    if (play === "yes") {
+        let name = prompt("What is your name?");
+        startCombat(play, name);
     }
-} else {
-    console.log("Bye bye!");
 }
+
+const startCombat = (play, name) => {
+    while (play) {
+        let choice = prompt("Do you want to attack or quit?");
+        if (choice === "attack") {
+            grantHealth -= getDamage();
+            userHealth -= getDamage();
+            console.log(`Grant has ${grantHealth} health left.`);
+            console.log(`${name} has ${userHealth} health left.`);
+
+            if (grantHealth <= 0) {
+                userWins += 1;
+                grantHealth = 10;
+                console.log(`You have beat Grant! You need to win ${3 - userWins} more rounds.`)
+            }
+
+            if (userHealth <= 0) {
+                console.log("You lose!")
+                break;
+            }
+
+            if (userWins === 3) {
+                console.log("You win!")
+                break;
+            }
+        } else{
+            break;
+        }
+    }
+    return;
+}
+
+const getDamage = () => {
+    return Math.floor((Math.random() * 5) + 1);
+}
+
+startGame();
 
 
